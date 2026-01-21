@@ -16,7 +16,7 @@ export default {
     }
 
     const url = new URL(request.url);
-    url.host = env.TRACCAR_WEB_HOST || 'gps.frotaweb.com';
+    url.host = env.TRACCAR_WEB_HOST;
     url.protocol = 'http:';
 
     // Build headers
