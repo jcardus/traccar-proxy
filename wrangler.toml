@@ -1,0 +1,6 @@
+name = "traccar-proxy"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+TRACCAR_API_URL = "https://your-traccar-server.com"
