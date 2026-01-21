@@ -19,11 +19,22 @@ export default {
     url.host = env.TRACCAR_WEB_HOST || 'gps.frotaweb.com';
     url.protocol = 'http:';
 
-    // Build headers, converting x-fleet-session to Cookie
+    // Build headers
     const headers = new Headers(request.headers);
-    const sessionId = headers.get('x-fleet-session');
+
+    // Get session from header or query string (for WebSocket)
+    const sessionId = headers.get('x-fleet-session') || url.searchParams.get('session');
     if (sessionId) {
       headers.set('Cookie', `JSESSIONID=${sessionId}`);
+      url.searchParams.delete('session'); // Don't forward the session param
+    }
+
+    // Handle WebSocket upgrade
+    const isWebSocket = request.headers.get('Upgrade') === 'websocket';
+    if (isWebSocket) {
+      return fetch(url, {
+        headers,
+      });
     }
 
     // Make the request to Traccar
